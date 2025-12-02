@@ -1,0 +1,57 @@
+{
+  "sections": {
+    "summaryOfYear": "Em 2024, foquei em melhorias de performance, estabilidade e novas funcionalidades no sistema de pagamentos. Entreguei 120 commits ao longo do ano, com ênfase em otimizações de cache, refatorações de código legado e implementação de novos endpoints.",
+    "keyProjects": [
+      {
+        "title": "Implementação de camada de cache",
+        "description": "Desenvolvi e integrei uma camada de cache Redis para endpoints críticos do serviço de usuários, reduzindo significativamente a latência.",
+        "impact": "Melhoria na experiência do usuário em endpoints de alta demanda.",
+        "evidence": [
+          "feat: implement cache layer for user endpoint (abc1234)",
+          "refactor: optimize cache key generation (def5678)"
+        ]
+      },
+      {
+        "title": "Migração de autenticação para OAuth 2.0",
+        "description": "Liderei a migração do sistema de autenticação legado para OAuth 2.0, garantindo compatibilidade com múltiplos provedores.",
+        "impact": "Maior segurança e facilidade de integração com novos serviços.",
+        "evidence": [
+          "feat: add OAuth 2.0 support (ghi9012)",
+          "fix: resolve token refresh issues (jkl3456)"
+        ]
+      }
+    ],
+    "technicalChallenges": [
+      {
+        "challenge": "Resolver problemas de performance em consultas complexas",
+        "solution": "Identifiquei gargalos através de profiling e implementei índices de banco de dados apropriados, além de otimizar queries N+1.",
+        "impact": "Redução de 60% no tempo de resposta em endpoints críticos.",
+        "evidence": [
+          "perf: add database indexes for user queries (mno7890)",
+          "refactor: eliminate N+1 queries in payment flow (pqr2345)"
+        ]
+      }
+    ],
+    "collaborationAndLeadership": [
+      "Mentorei desenvolvedor junior no onboarding, realizando code reviews e sessões de pair programming.",
+      "Participei ativamente em reuniões de planejamento técnico, propondo soluções arquiteturais para novos projetos.",
+      "Documentei padrões de desenvolvimento e melhores práticas no wiki interno da equipe."
+    ],
+    "learningAndGrowth": [
+      "Aprofundei conhecimentos em Redis e estratégias de caching distribuído.",
+      "Estudei padrões de segurança OAuth 2.0 e implementei na prática.",
+      "Melhorei habilidades de profiling e otimização de performance em ambientes de alta escala."
+    ],
+    "goalsNextCycle": [
+      "Expandir conhecimentos em Kubernetes e infraestrutura como código.",
+      "Liderar projeto de migração de microserviços para arquitetura event-driven.",
+      "Contribuir mais ativamente em projetos open source relacionados ao stack da empresa."
+    ],
+    "appendixEvidence": [
+      "Total de commits no ano: 120",
+      "Principais repositórios: payments-service, user-auth-service",
+      "Temas principais: performance, security, refactoring, features"
+    ]
+  },
+  "markdown": "# Relatório de Autoavaliação - 2024\n\n## Resumo do Ano\n\nEm 2024, foquei em melhorias de performance, estabilidade e novas funcionalidades no sistema de pagamentos. Entreguei 120 commits ao longo do ano, com ênfase em otimizações de cache, refatorações de código legado e implementação de novos endpoints.\n\n## Principais Entregas e Projetos\n\n### 1. Implementação de camada de cache\n\nDesenvolvi e integrei uma camada de cache Redis para endpoints críticos do serviço de usuários, reduzindo significativamente a latência.\n\n**Impacto:** Melhoria na experiência do usuário em endpoints de alta demanda.\n\n**Evidências:**\n- feat: implement cache layer for user endpoint (abc1234)\n- refactor: optimize cache key generation (def5678)\n\n### 2. Migração de autenticação para OAuth 2.0\n\nLiderei a migração do sistema de autenticação legado para OAuth 2.0, garantindo compatibilidade com múltiplos provedores.\n\n**Impacto:** Maior segurança e facilidade de integração com novos serviços.\n\n**Evidências:**\n- feat: add OAuth 2.0 support (ghi9012)\n- fix: resolve token refresh issues (jkl3456)\n\n## Desafios Técnicos Superados\n\n### Resolver problemas de performance em consultas complexas\n\n**Solução:** Identifiquei gargalos através de profiling e implementei índices de banco de dados apropriados, além de otimizar queries N+1.\n\n**Impacto:** Redução de 60% no tempo de resposta em endpoints críticos.\n\n**Evidências:**\n- perf: add database indexes for user queries (mno7890)\n- refactor: eliminate N+1 queries in payment flow (pqr2345)\n\n## Colaboração e Liderança\n\n- Mentorei desenvolvedor junior no onboarding, realizando code reviews e sessões de pair programming.\n- Participei ativamente em reuniões de planejamento técnico, propondo soluções arquiteturais para novos projetos.\n- Documentei padrões de desenvolvimento e melhores práticas no wiki interno da equipe.\n\n## Desenvolvimento e Aprendizado\n\n- Aprofundei conhecimentos em Redis e estratégias de caching distribuído.\n- Estudei padrões de segurança OAuth 2.0 e implementei na prática.\n- Melhorei habilidades de profiling e otimização de performance em ambientes de alta escala.\n\n## Metas para o Próximo Ciclo\n\n- Expandir conhecimentos em Kubernetes e infraestrutura como código.\n- Liderar projeto de migração de microserviços para arquitetura event-driven.\n- Contribuir mais ativamente em projetos open source relacionados ao stack da empresa.\n\n## Apêndice - Evidências\n\n- Total de commits no ano: 120\n- Principais repositórios: payments-service, user-auth-service\n- Temas principais: performance, security, refactoring, features\n"
+}

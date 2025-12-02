@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevYear Recap — Paywall Preview</title>
+    <link rel="stylesheet" href="/design-tokens.css" />
+    <style>
+      body {
+        min-height: 100vh;
+        background: radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.08), transparent 35%),
+          radial-gradient(circle at 80% 10%, rgba(16, 185, 129, 0.08), transparent 35%),
+          radial-gradient(circle at 40% 70%, rgba(6, 182, 212, 0.05), transparent 35%),
+          var(--color-bg-base);
+        padding-top: 80px;
+      }
+      .hero {
+        max-width: var(--max-w-3xl);
+        margin: 0 auto;
+        text-align: center;
+      }
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-4);
+        justify-content: center;
+        margin-top: var(--space-6);
+      }
+      select {
+        background: rgba(15, 23, 42, 0.8);
+        color: var(--color-text-white);
+        border: 1px solid rgba(51, 65, 85, var(--opacity-border-strong));
+        border-radius: var(--radius-xl);
+        padding: 0.75rem 1rem;
+      }
+      .paywall-card {
+        margin-top: var(--space-8);
+      }
+      .feature-grid {
+        max-width: var(--max-w-4xl);
+        margin: var(--space-8) auto;
+      }
+      .feature-grid .card {
+        height: 100%;
+      }
+      footer {
+        margin: var(--space-8) auto;
+        text-align: center;
+        color: var(--color-text-slate-400);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background-blob blue" style="top:-120px; left:-80px;"></div>
+    <div class="background-blob emerald" style="bottom:-140px; right:-120px;"></div>
+    <div class="background-blob cyan" style="top:40%; left:30%;"></div>
+
+    <main class="container">
+      <header class="hero animate-fade-in">
+        <nav style="display:flex; justify-content:center; gap: var(--space-4); align-items:center; margin-bottom: var(--space-4); flex-wrap: wrap;">
+          <a class="badge" href="/app" data-route="app">App</a>
+          <a class="badge" href="/paywall" data-route="paywall">Paywall</a>
+          <a class="badge" href="/report" data-route="report">Preview</a>
+        </nav>
+        <p class="badge" id="current-selection">Idioma: pt-BR • Moeda: BRL</p>
+        <h1 id="hero-title" class="text-gradient" style="font-size: var(--text-h1); line-height: var(--leading-tight); margin-top: var(--space-4);">
+          Não desperdice seu domingo lembrando o que você codou em março.
+        </h1>
+        <p id="hero-subtitle" style="color: var(--color-text-slate-200); font-size: var(--text-body-lg); margin-top: var(--space-4); max-width: var(--max-w-4xl);">
+          Conecte seus repositórios locais. Gere sua autoavaliação de desempenho em 30 segundos. Aumente suas chances de promoção sem o estresse da escrita. Preço único, privacidade local.
+        </p>
+        <div class="controls">
+          <label style="display:flex; flex-direction:column; gap: var(--space-2); color: var(--color-text-slate-200);">
+            <span id="label-language">Idioma / Language</span>
+            <select id="locale-select">
+              <option value="pt-BR">Português (BR)</option>
+              <option value="en">English</option>
+              <option value="es">Español</option>
+            </select>
+          </label>
+        </div>
+      </header>
+
+      <section class="card paywall-card animate-fade-in-up">
+        <h2 id="paywall-heading" style="font-size: var(--text-h2); margin-bottom: var(--space-4);">Pagamento e desbloqueio</h2>
+        <p id="paywall-text" style="font-size: var(--text-body-lg);"></p>
+        <p id="price-tag" style="color: var(--color-text-slate-300); margin-top: var(--space-2);"></p>
+        <div style="margin-top: var(--space-6); display:flex; align-items:center; gap: var(--space-4); flex-wrap: wrap;">
+          <button class="btn-primary" style="min-width: 220px;" id="license-btn">Inserir licença</button>
+          <div class="badge" id="receipt-line"></div>
+          <span id="status" class="text-muted"></span>
+        </div>
+        <div class="card" style="margin-top: var(--space-6); background: rgba(15, 23, 42, 0.6); border-color: rgba(16, 185, 129, 0.3);">
+          <strong id="price-title">Preço e licenciamento</strong>
+          <p id="price-note" style="margin-top: var(--space-2); color: var(--color-text-slate-200); line-height: 1.6;">
+            Pagamento único: R$25 (Pix ou cartão), €5 ou £5 (cartão). License key para até 3 máquinas. Sem recorrência.
+          </p>
+          <p id="price-note-2" style="margin-top: var(--space-2); color: var(--color-text-slate-200); line-height: 1.6;">
+            Após o pagamento, a chave aparece na página de sucesso e é enviada por e-mail. No app, cole a chave para remover o blur e exportar o relatório.
+          </p>
+        </div>
+        <div id="report-preview" class="card" style="margin-top: var(--space-6); filter: blur(12px); opacity: 0.6;">
+          <strong>Prévia do relatório (blur até inserir licença)</strong>
+          <p style="margin-top: var(--space-2);">Principais Entregas — Implementação de cache no endpoint de usuários, redução de latência e menor carga no banco (PR #123).</p>
+          <p>Desafios Técnicos — Correção de condição de corrida no billing com serialização de operações críticas.</p>
+          <p>Impacto no Negócio — Checkout mais rápido e menor taxa de suporte reativo.</p>
+        </div>
+      </section>
+
+      <section class="card" style="margin-top: var(--space-8);">
+        <h2 id="donation-title" style="font-size: var(--text-h2); margin-bottom: var(--space-4);">Apoie o projeto (opcional)</h2>
+        <p id="donation-desc" style="color: var(--color-text-slate-200); line-height: 1.6; max-width: var(--max-w-3xl);">
+          DevYear Recap é mantido por um dev solo autodidata. Sua doação ajuda a manter o projeto ativo, adicionar novas features e pagar a infraestrutura. Obrigado por apoiar!
+        </p>
+        <div style="display:flex; flex-wrap:wrap; gap: var(--space-4); margin-top: var(--space-4); align-items:flex-end;">
+          <div style="display:flex; flex-direction:column; gap: var(--space-2); min-width: 220px;">
+            <label id="donation-currency-label" style="color: var(--color-text-slate-200); font-size: var(--text-body-md);">Moeda da doação</label>
+            <select id="donation-currency" class="input" style="width: 100%;">
+              <option value="BRL">BRL (R$)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="GBP">GBP (£)</option>
+            </select>
+          </div>
+          <div style="display:flex; flex-direction:column; gap: var(--space-2); min-width: 220px;">
+            <label id="donation-amount-label" style="color: var(--color-text-slate-200); font-size: var(--text-body-md);">Valor da doação (opcional)</label>
+            <input id="donation-amount" class="input" placeholder="Ex.: 50" type="number" min="0" step="1" />
+          </div>
+          <button type="button" class="btn-primary" style="min-width: 160px;" onclick="handleSupport()">Apoiar</button>
+        </div>
+        <p id="donation-helper" style="margin-top: var(--space-3); color: var(--color-text-slate-300); font-size: var(--text-body-md);">
+          Se não quiser doar, mantenha em branco. A doação é adicionada no checkout (Stripe ou Pix).
+        </p>
+      </section>
+
+      <section class="feature-grid" style="margin-top: var(--space-8);">
+        <div class="grid-features">
+          <div class="card animate-fade-in-up delay-100" id="feature-1">
+            <div class="badge" style="margin-bottom: var(--space-4); display:flex; align-items:center; gap:8px;">
+              <span style="width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:999px;background:linear-gradient(135deg,#10b981,#06b6d4);box-shadow:0 10px 30px -15px rgba(16,185,129,0.8);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color:#0f172a;">
+                  <path d="M12 22s8-4 8-10V7l-8-3-8 3v5c0 6 8 10 8 10Z"></path>
+                  <circle cx="12" cy="12" r="2"></circle>
+                  <path d="M12 14v2"></path>
+                </svg>
+              </span>
+              <span class="feature-title">Zero Config Privacy</span>
+            </div>
+            <p class="feature-body">Usa credenciais locais (Git/Jira) sem pedir token novo.</p>
+          </div>
+          <div class="card animate-fade-in-up delay-200" id="feature-2">
+            <div class="badge" style="margin-bottom: var(--space-4); display:flex; align-items:center; gap:8px;">
+              <span style="width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:999px;background:linear-gradient(135deg,#3b82f6,#06b6d4);box-shadow:0 10px 30px -15px rgba(59,130,246,0.8);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color:#0f172a;">
+                  <rect x="3" y="3" width="11" height="14" rx="2"></rect>
+                  <path d="M6 8h5"></path>
+                  <path d="M6 12h4"></path>
+                  <path d="M15 8h3"></path>
+                  <path d="M15 12h3"></path>
+                  <path d="M15 16h3"></path>
+                  <path d="m11 16 2-2"></path>
+                  <path d="m11 10 2-2"></path>
+                </svg>
+              </span>
+              <span class="feature-title">Relatório com Provas</span>
+            </div>
+            <p class="feature-body">Inclui links de PRs e tickets resolvidos como evidências.</p>
+          </div>
+          <div class="card animate-fade-in-up delay-300" id="feature-3">
+            <div class="badge" style="margin-bottom: var(--space-4); display:flex; align-items:center; gap:8px;">
+              <span style="width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:999px;background:linear-gradient(135deg,#06b6d4,#10b981);box-shadow:0 10px 30px -15px rgba(6,182,212,0.8);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color:#0f172a;">
+                  <path d="M5 4h8l6 6v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"></path>
+                  <path d="M13 4v4h4"></path>
+                  <path d="M7 12h6"></path>
+                  <path d="M7 16h4"></path>
+                  <path d="M7 8h2"></path>
+                </svg>
+              </span>
+              <span class="feature-title">Texto Corporativo</span>
+            </div>
+            <p class="feature-body">Gera seções de entregas, desafios técnicos e impacto de negócio.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" style="margin-top: var(--space-8);">
+        <h2 style="font-size: var(--text-h2); margin-bottom: var(--space-4);">Como funciona</h2>
+        <div class="grid-features">
+          <div class="card animate-fade-in-up delay-100" id="step-1">
+            <div class="badge" style="margin-bottom: var(--space-3); display:flex; align-items:center; gap:8px;">
+              <span style="background: rgba(16,185,129,0.2); color: #a7f3d0; width: 26px; height: 26px; border-radius: 999px; display:flex; align-items:center; justify-content:center; font-weight:700;">1</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #10b981;">
+                <path d="M3 6a2 2 0 0 1 2-2h6l2 2h6a2 2 0 0 1 2 2v2H3Z"></path>
+                <path d="M3 10v7a2 2 0 0 0 2 2h14"></path>
+                <path d="m9 14 2 2 4-4"></path>
+              </svg>
+              <span class="step-title">Aponte sua pasta</span>
+            </div>
+            <p class="step-body">Detectamos repositórios .git e seu autor no .gitconfig.</p>
+          </div>
+          <div class="card animate-fade-in-up delay-200" id="step-2">
+            <div class="badge" style="margin-bottom: var(--space-3); display:flex; align-items:center; gap:8px;">
+              <span style="background: rgba(16,185,129,0.2); color: #a7f3d0; width: 26px; height: 26px; border-radius: 999px; display:flex; align-items:center; justify-content:center; font-weight:700;">2</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #3b82f6;">
+                <path d="M4 4h9l5 5v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"></path>
+                <path d="M9 13h6"></path>
+                <path d="M9 17h3"></path>
+                <path d="M9 9h2"></path>
+                <path d="M13 4v5h5"></path>
+              </svg>
+              <span class="step-title">Escaneamos o ano</span>
+            </div>
+            <p class="step-body">Filtramos merges/WIP/typos e agrupamos temas (performance, estabilidade, DX, etc.).</p>
+          </div>
+          <div class="card animate-fade-in-up delay-300" id="step-3">
+            <div class="badge" style="margin-bottom: var(--space-3); display:flex; align-items:center; gap:8px;">
+              <span style="background: rgba(16,185,129,0.2); color: #a7f3d0; width: 26px; height: 26px; border-radius: 999px; display:flex; align-items:center; justify-content:center; font-weight:700;">3</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #06b6d4;">
+                <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                <path d="M7 7h4"></path>
+                <path d="M7 11h6"></path>
+                <path d="M7 15h4"></path>
+                <path d="m13 17 2 2 4-4"></path>
+              </svg>
+              <span class="step-title">IA gera o texto final</span>
+            </div>
+            <p class="step-body">Prompt corporativo focado em promoção ou autoavaliação, com evidências e seções prontas para colar.</p>
+          </div>
+          <div class="card animate-fade-in-up delay-400" id="step-4">
+            <div class="badge" style="margin-bottom: var(--space-3); display:flex; align-items:center; gap:8px;">
+              <span style="background: rgba(16,185,129,0.2); color: #a7f3d0; width: 26px; height: 26px; border-radius: 999px; display:flex; align-items:center; justify-content:center; font-weight:700;">4</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #10b981;">
+                <rect x="3" y="11" width="18" height="10" rx="2"></rect>
+                <path d="M7 11V8a5 5 0 0 1 10 0v3"></path>
+                <path d="M12 15v2"></path>
+              </svg>
+              <span class="step-title">Licença e desbloqueio</span>
+            </div>
+            <p class="step-body">Preview borrado até validar a licença. Após pagamento, exporta Markdown/PDF.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" style="margin-top: var(--space-8);">
+        <h2 id="privacy-title" style="font-size: var(--text-h2); margin-bottom: var(--space-4);">Privacidade local</h2>
+        <p id="privacy-body-1" style="color: var(--color-text-slate-200); line-height: 1.6;">
+          A coleta é local. Apenas mensagens de commit/PR/tickets são resumidas. Código-fonte não sai da sua máquina. Env vars e tokens (Jira, Git) ficam sob seu controle.
+        </p>
+        <p id="privacy-body-2" style="color: var(--color-text-slate-200); line-height: 1.6; margin-top: var(--space-3);">
+          O prompt de IA envia apenas dados agregados e amostras de mensagens, sem arquivos de código.
+        </p>
+      </section>
+
+      <section class="card" style="margin-top: var(--space-8);">
+        <h2 id="faq-title" style="font-size: var(--text-h2); margin-bottom: var(--space-4);">Perguntas frequentes</h2>
+        <div class="grid-features">
+          <div class="card animate-fade-in-up delay-100" id="faq-1"></div>
+          <div class="card animate-fade-in-up delay-200" id="faq-2"></div>
+          <div class="card animate-fade-in-up delay-300" id="faq-3"></div>
+          <div class="card animate-fade-in-up delay-400" id="faq-4"></div>
+          <div class="card animate-fade-in-up delay-500" id="faq-5"></div>
+          <div class="card animate-fade-in-up delay-500" id="faq-6"></div>
+          <div class="card animate-fade-in-up delay-500" id="faq-7"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      DevYear Recap · Preço fixo: R$25 · €5 · £5
+    </footer>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

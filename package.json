@@ -1,0 +1,28 @@
+{
+  "name": "devyear-recap",
+  "version": "0.1.0",
+  "description": "DevYear Recap CLI scaffold with i18n and fixed pricing.",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "ts-node src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "test": "ts-node tests/run-tests.ts",
+    "preview": "ts-node src/server.ts --port 3004",
+    "scan": "ts-node src/cli.ts --repo . --out report.md",
+    "test:e2e": "playwright test --config=playwright.config.ts"
+  },
+  "dependencies": {
+    "openai": "^4.76.1",
+    "pdfkit": "^0.15.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}
