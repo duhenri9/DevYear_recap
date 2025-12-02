@@ -154,13 +154,98 @@ function startServer(port: number) {
       } catch (_) {
         // ignore
       }
-      sendJson(res, 200, {
-        url: "https://abacatepay.example.com/pix-session",
-        qrCodeData: "PIX|DevYear|" + (body?.donationAmount ?? 25),
-        note: "Stub Pix - implementar Abacate Pay real",
-        donationAmount: body?.donationAmount ?? 0,
-        donationCurrency: body?.donationCurrency ?? "BRL",
-      });
+      const apiKey = process.env.ABACATE_PAY_API_KEY;
+      const baseUrl = process.env.ABACATE_PAY_BASE_URL;
+      if (!apiKey || !baseUrl) {
+        sendJson(res, 501, { error: "Pix não configurado", note: "Defina ABACATE_PAY_API_KEY e ABACATE_PAY_BASE_URL" });
+        return;
+      }
+      const amount = Number(body?.donationAmount ?? 25);
+      const email = body?.email ?? "";
+      const successUrl = body?.successUrl ?? "";
+      const cancelUrl = body?.cancelUrl ?? "";
+      const payload = {
+        amount,
+        currency: "BRL",
+        email,
+        successUrl,
+        cancelUrl,
+        metadata: {
+          donation: true,
+        },
+      };
+      try {
+        const resp = await fetch(`${baseUrl.replace(/\/$/, "")}/checkout`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${apiKey}`,
+          },
+          body: JSON.stringify(payload),
+        });
+        if (!resp.ok) {
+          const text = await resp.text();
+          sendJson(res, 502, { error: "Falha ao criar checkout Pix", detail: text });
+          return;
+        }
+        const data = await resp.json();
+        sendJson(res, 200, {
+          url: data.url ?? "",
+          qrCodeData: data.qrCodeData ?? "",
+          note: "Pix via Abacate Pay",
+          donationAmount: amount,
+          donationCurrency: "BRL",
+        });
+      } catch (err: any) {
+        sendJson(res, 500, { error: "Erro ao chamar Abacate Pay", detail: String(err?.message ?? err) });
+      }
+      return;
+    }
+
+    if (pathname === "/api/stripe/refund" && req.method === "POST") {
+      const secret = process.env.STRIPE_SECRET_KEY;
+      if (!secret) {
+        sendJson(res, 501, { error: "Stripe não configurado", note: "Defina STRIPE_SECRET_KEY" });
+        return;
+      }
+      const raw = await readBody(req);
+      let body: any = {};
+      try {
+        body = JSON.parse(raw);
+      } catch (_) {
+        sendJson(res, 400, { error: "Invalid JSON" });
+        return;
+      }
+      const paymentIntent = body.paymentIntentId;
+      const charge = body.chargeId;
+      const reason = body.reason ?? "requested_by_customer";
+      if (!paymentIntent && !charge) {
+        sendJson(res, 400, { error: "Informe paymentIntentId ou chargeId" });
+        return;
+      }
+      const form = new URLSearchParams();
+      if (paymentIntent) form.append("payment_intent", paymentIntent);
+      if (charge) form.append("charge", charge);
+      form.append("reason", reason);
+
+      try {
+        const stripeResp = await fetch("https://api.stripe.com/v1/refunds", {
+          method: "POST",
+          headers: {
+            Authorization: `Basic ${Buffer.from(`${secret}:`).toString("base64")}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: form.toString(),
+        });
+        const data = await stripeResp.json();
+        if (!stripeResp.ok) {
+          sendJson(res, stripeResp.status, { error: "Stripe refund failed", detail: data });
+          return;
+        }
+        sendJson(res, 200, { ok: true, refund: data });
+      } catch (err: any) {
+        sendJson(res, 500, { error: "Erro ao criar reembolso Stripe", detail: String(err?.message ?? err) });
+      }
       return;
     }
 

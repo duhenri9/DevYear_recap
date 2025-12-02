@@ -193,18 +193,6 @@ async function loadConfig() {
   }
 }
 
-async function saveConfig(locale) {
-  try {
-    await fetchJSON("/api/config", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ locale }),
-    });
-  } catch (err) {
-    console.warn("Could not save config", err);
-  }
-}
-
 function setStatus(text) {
   if (ui.status) ui.status.textContent = text || "";
 }
@@ -299,10 +287,14 @@ async function refreshPaywall() {
     ui.receiptLine.textContent = data.receiptLine;
     ui.currentSelection.textContent = `Idioma: ${data.locale} • Moeda: ${data.currency}`;
     setStatus("Pronto");
-    await saveConfig(locale);
+    await fetchJSON("/api/config", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ locale }),
+    });
     applyTranslations(locale);
   } catch (err) {
-    console.error(err);
+    console.error("Erro ao carregar paywall", err);
     setStatus("Erro ao carregar paywall");
   }
 }

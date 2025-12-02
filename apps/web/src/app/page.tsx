@@ -1,5 +1,5 @@
 "use client";
-import { ArrowRight, Lock, Zap, Clock, Shield, GitBranch, Sparkles, Award, TrendingUp, Database, Code2, FileText } from "lucide-react";
+import { ArrowRight, Lock, Zap, Clock, Shield, GitBranch, Sparkles, Award, TrendingUp, Database, FileText } from "lucide-react";
 import { useState } from "react";
 
 export default function Home() {
@@ -54,12 +54,21 @@ export default function Home() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+      if (!res.ok) {
+        const detail = await res.text();
+        throw new Error(detail || "Erro ao iniciar checkout");
+      }
       const data = await res.json();
       if (method === "card" && data.url) {
         window.location.href = data.url;
       } else if (method === "pix") {
         setPix({ url: data.url, qr: data.qrCodeData });
+      } else {
+        alert("Não foi possível iniciar o pagamento. Tente novamente.");
       }
+    } catch (err: any) {
+      alert("Falha ao iniciar checkout. Verifique sua conexão e tente novamente.");
+      console.error("Checkout error", err);
     } finally {
       setLoading(false);
     }

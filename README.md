@@ -101,6 +101,7 @@ Run `npm test` to cover locale→currency mapping and config persistence.
 
 ## TODO principais (seguindo o plano)
 - Completar integração Stripe (webhook + checkout) e ligar landing ao endpoint `/api/stripe/checkout`.
+- Stripe refund automation disponível via `/api/stripe/refund` (requer STRIPE_SECRET_KEY) — enviar `paymentIntentId` ou `chargeId`.
 - Conectar Jira/PR ingest ao pipeline de geração (CLI/rotas).
 - Adicionar testes E2E com Playwright MCP (landing → Stripe teste → licença → ativação → geração .md com IA mock).
 - Empacotar Tauri/React reutilizando `design-tokens.css` e endpoints atuais.

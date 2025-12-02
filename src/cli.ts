@@ -10,6 +10,7 @@ import { fetchPRs } from "./integrations/prs";
 import { fetchJiraIssues } from "./integrations/jira";
 import { validateLicense, clearLocalLicense } from "./license/validator";
 import { clearCache } from "./git/cache";
+import { findGitRepos } from "./git/discovery";
 
 type Args = {
   repo: string;
@@ -27,6 +28,9 @@ type Args = {
   clearCache?: boolean;
   skipCache?: boolean;
   preview?: boolean;
+  role?: "junior" | "mid" | "senior" | "staff" | "lead";
+  focus?: "self-review" | "promotion";
+  root?: string;
 };
 
 function parseArgs(): Args {
@@ -49,6 +53,9 @@ function parseArgs(): Args {
     else if (arg === "--clear-cache") out.clearCache = true;
     else if (arg === "--skip-cache") out.skipCache = true;
     else if (arg === "--preview") out.preview = true;
+    else if (arg === "--role" && args[i + 1]) out.role = args[++i] as Args["role"];
+    else if (arg === "--focus" && args[i + 1]) out.focus = args[++i] as Args["focus"];
+    else if (arg === "--root" && args[i + 1]) out.root = args[++i];
   }
   return out;
 }
@@ -87,23 +94,38 @@ async function main() {
   const until = args.until;
   const author = args.author ?? detectAuthor(repoPath);
   const year = args.year ?? new Date().getFullYear();
+  const roleLevel = args.role ?? "senior";
+  const focus = args.focus ?? "promotion";
 
   if (!author) {
     console.error("Autor não detectado. Use --author \"Seu Nome\".");
     process.exit(1);
   }
 
-  console.log(`Escaneando repo: ${repoPath}`);
+  const reposToScan = args.root ? findGitRepos(path.resolve(args.root)) : [repoPath];
+
+  console.log(`Escaneando ${reposToScan.length} repositório(s)`);
   console.log(`Autor: ${author}`);
   console.log(`Período: desde ${since}${until ? ` até ${until}` : ""}`);
   console.log(`Idioma do relatório: ${args.lang ?? "pt"}`);
+  console.log(`Foco: ${focus} | Senioridade: ${roleLevel}`);
 
-  const commits = scanCommits({ repoPath, since, until, author, skipCache: args.skipCache });
-  const filtered = filterNoise(commits);
-  const merges = scanMerges(repoPath, since, until);
-  console.log(`Commits encontrados: ${commits.length} | Após filtro: ${filtered.length} | Merges/PRs: ${merges.length}`);
+  let allCommits: ReturnType<typeof scanCommits> = [];
+  let allMerges: ReturnType<typeof scanMerges> = [];
 
-  const prs = fetchPRs(repoPath, since, until);
+  reposToScan.forEach((repo) => {
+    console.log(`→ ${path.basename(repo)}`);
+    const commits = scanCommits({ repoPath: repo, since, until, author, skipCache: args.skipCache });
+    const merges = scanMerges(repo, since, until);
+    console.log(`   commits: ${commits.length} | merges: ${merges.length}`);
+    allCommits = allCommits.concat(commits);
+    allMerges = allMerges.concat(merges);
+  });
+
+  const filtered = filterNoise(allCommits);
+  console.log(`Total commits: ${allCommits.length} | Após filtro: ${filtered.length} | Merges/PRs: ${allMerges.length}`);
+
+  const prs = reposToScan.flatMap((repo) => fetchPRs(repo, since, until));
   const jira = await fetchJiraIssues(`assignee = currentUser() AND resolved >= ${since}`);
 
   const summary = buildAggregatedSummary(filtered, {
@@ -119,14 +141,14 @@ async function main() {
         year,
         language: (args.lang === "en" ? "en-US" : args.lang === "es" ? "es-ES" : "pt-BR") as "pt-BR" | "en-US" | "es-ES",
         author: { name: author },
-        roleLevel: "senior",
-        focus: "promotion",
+        roleLevel,
+        focus,
         companyStyle: "formal",
         aggregatedSummary: summary,
         commitsSample: filtered.slice(0, 30),
         explicitUserNotes: {
           wantsToHighlight: [
-            ...merges.slice(0, 5).map((m) => `${m.title} (${m.repoName})`),
+            ...allMerges.slice(0, 5).map((m) => `${m.title} (${m.repoName})`),
             ...prs.slice(0, 5).map((p) => `PR: ${p.title}`),
             ...jira.slice(0, 5).map((j) => `Jira ${j.key}: ${j.summary}`),
           ],
